@@ -1,12 +1,20 @@
+/*  处理博客路由
+    进行路由匹配并返回固定格式的数据
+*/
+const { getList } = require("../constroller/blog");
+const { SuccessModel, ErrorModel } = require("../model/resMdodel");
+
 const handleBlogRouter = (req, res) => {
   const method = req.method;
   const url = req.url;
 
   //获取博客列表
   if (method === "GET" && req.path === "/api/blog/list") {
-    return {
-      msg: "这是获取博客列表的接口",
-    };
+    const author = req.query.author || "";
+    const keyword = req.query.keyword || "";
+    const listData = getList(author, keyword);
+
+    return new SuccessModel(listData);
   }
 
   // 获取博客详情
