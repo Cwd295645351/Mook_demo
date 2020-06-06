@@ -1,11 +1,18 @@
 /*  处理博客路由
     进行路由匹配并返回固定格式的数据
 */
-const { getList } = require("../constroller/blog");
+const {
+  getList,
+  getDetail,
+  newBlog,
+  updataBlog,
+  delBlog,
+} = require("../constroller/blog");
 const { SuccessModel, ErrorModel } = require("../model/resMdodel");
 
 const handleBlogRouter = (req, res) => {
   const method = req.method;
+  const id = req.query.id;
   const url = req.url;
 
   //获取博客列表
@@ -19,30 +26,37 @@ const handleBlogRouter = (req, res) => {
 
   // 获取博客详情
   if (method === "GET" && req.path === "/api/blog/detail") {
-    return {
-      msg: "这是获取博客详情的接口",
-    };
+    const data = getDetail(id);
+    return new SuccessModel(data);
   }
 
   // 新建一篇博客
   if (method === "POST" && req.path === "/api/blog/new") {
-    return {
-      msg: "这是新建博客的接口",
-    };
+    const data = newBlog(req.body);
+    return new SuccessModel(data);
   }
 
   // 更新一篇博客
   if (method === "POST" && req.path === "/api/blog/update") {
+    const result = updataBlog(id, req.body);
+    if (result) {
+      return new SuccessModel();
+    } else {
+      return new ErrorModel("更新博客失败");
+    }
     return {
       msg: "这是更新博客的接口",
     };
   }
 
-  // 新建一篇博客
+  // 删除一篇博客
   if (method === "POST" && req.path === "/api/blog/del") {
-    return {
-      msg: "这是删除博客的接口",
-    };
+    const result = delBlog(id);
+    if (result) {
+      return new SuccessModel();
+    } else {
+      return new ErrorModel("删除博客失败");
+    }
   }
 };
 

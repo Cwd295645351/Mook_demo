@@ -1,12 +1,17 @@
+const { loginCheck } = require("../constroller/user");
+const { SuccessModel, ErrorModel } = require("../model/resMdodel");
+
 const handleUserRouter = (req, res) => {
-  const method = req.method;
-  
+  const method = req.method; // GET POST
 
   // 登录
   if (method === "POST" && req.path === "/api/user/login") {
-    return {
-      msg: "这是登录的接口",
-    };
+    const { username, password } = req.body;
+    const result = loginCheck(username, password);
+    if (result) {
+      return new SuccessModel();
+    }
+    return new ErrorModel("登录失败");
   }
 };
 
