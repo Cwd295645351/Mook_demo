@@ -5,7 +5,7 @@ const {
   getList,
   getDetail,
   newBlog,
-  updataBlog,
+  updateBlog,
   delBlog,
 } = require("../constroller/blog");
 const { SuccessModel, ErrorModel } = require("../model/resMdodel");
@@ -43,7 +43,7 @@ const handleBlogRouter = (req, res) => {
     // const data = newBlog(req.body);
     // return new SuccessModel(data);
     const author = "zhangsan";
-    req.body.author = author;// 假数据，待开发登录时再改成真实数据
+    req.body.author = author; // 假数据，待开发登录时再改成真实数据
     const result = newBlog(req.body);
     return result.then((data) => {
       return new SuccessModel(data);
@@ -52,25 +52,28 @@ const handleBlogRouter = (req, res) => {
 
   // 更新一篇博客
   if (method === "POST" && req.path === "/api/blog/update") {
-    const result = updataBlog(id, req.body);
-    if (result) {
-      return new SuccessModel();
-    } else {
-      return new ErrorModel("更新博客失败");
-    }
-    return {
-      msg: "这是更新博客的接口",
-    };
+    const result = updateBlog(id, req.body);
+    return result.then((val) => {
+      if (val) {
+        return new SuccessModel();
+      } else {
+        return new ErrorModel("更新博客失败");
+      }
+    });
   }
 
   // 删除一篇博客
   if (method === "POST" && req.path === "/api/blog/del") {
-    const result = delBlog(id);
-    if (result) {
-      return new SuccessModel();
-    } else {
-      return new ErrorModel("删除博客失败");
-    }
+    const author = "zhangsan";
+    req.body.author = author; // 假数据，待开发登录时再改成真实数据
+    const result = delBlog(id, author);
+    return result.then((val) => {
+      if (val) {
+        return new SuccessModel();
+      } else {
+        return new ErrorModel("删除博客失败");
+      }
+    });
   }
 };
 
