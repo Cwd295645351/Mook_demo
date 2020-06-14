@@ -22,6 +22,10 @@ API 的一部分
 
 
 
+用户刚开始登录时首先检查是否有userId，没有则初始化userid并将其设置为sessionid，接着从redis中查找是否有sessionid数据，若有则将返回值放到session中
+
+
+
 
 
 数据库使用MySQL，数据库可视化使用MySQL Workbench
