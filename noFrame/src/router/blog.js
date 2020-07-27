@@ -11,7 +11,7 @@ const {
 const {
   SuccessModel,
   ErrorModel
-} = require("../model/resMdodel");
+} = require("../model/resModel");
 
 // 统一的登录验证函数
 const loginCheck = (req) => {
