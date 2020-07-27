@@ -1,11 +1,8 @@
 /*
   controller处理数据，只关心数据并返回数据
  */
-const xss=require("xss")
-const {
-  exec,
-  escape
-} = require("../db/mysql");
+const xss = require("xss");
+const { exec, escape } = require("../db/mysql");
 
 const getList = (author, keyword) => {
   author = escape(author);
@@ -18,7 +15,6 @@ const getList = (author, keyword) => {
   }
   sql += `order by createtime desc;`;
 
-  console.log(sql)
   // 返回promise
   return exec(sql).then((rows) => {
     return rows;
@@ -35,7 +31,6 @@ const getDetail = (id) => {
 
 const newBlog = (blogData = {}) => {
   //blogData 是一个博客对象，包含title, content, author属性
-  // console.log("newBlog blogData...", blogData);
   let title = xss(blogData.title);
   let content = xss(blogData.content);
   let author = blogData.author;
@@ -45,12 +40,10 @@ const newBlog = (blogData = {}) => {
   content = escape(content);
   author = escape(author);
 
-
   const sql = `
     insert into blogs (title, content, createtime, author) 
     value (${title}, ${content}, ${createTime}, ${author})`;
   return exec(sql).then((insertData) => {
-    console.log("insertData is ", insertData);
     return {
       id: insertData.insertId,
     };
@@ -60,7 +53,6 @@ const newBlog = (blogData = {}) => {
 const updateBlog = (id, blogData = {}) => {
   // id 就是要更新博客的 id
   //blogData 是一个博客对象，包含title content属性
-  // console.log("update blog", id, blogData);
 
   let title = xss(blogData.title);
   let content = xss(blogData.content);
@@ -72,7 +64,6 @@ const updateBlog = (id, blogData = {}) => {
     update blogs set title=${title}, content=${content} where id=${id}
   `;
   return exec(sql).then((updateData) => {
-    console.log("updateData is ", updateData);
     if (updateData.affectedRows > 0) {
       return true;
     }
@@ -88,7 +79,6 @@ const delBlog = (id, author) => {
 
   const sql = `delete from blogs where id=${id} and author=${author}`;
   return exec(sql).then((delData) => {
-    console.log("delData is ", delData);
     if (delData.affectedRows > 0) {
       return true;
     }

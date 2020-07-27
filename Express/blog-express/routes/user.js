@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const { login } = require("../constroller/user");
-const { SuccessModel, ErrorModel } = require("../model/resMdodel");
+const { SuccessModel, ErrorModel } = require("../model/resModel");
 
 router.post("/login", function (req, res, next) {
   const { username, password } = req.body;
