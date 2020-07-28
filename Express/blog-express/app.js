@@ -1,6 +1,7 @@
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
+var fs = require("fs");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const session = require("express-session");
@@ -17,7 +18,26 @@ var app = express();
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'jade');
 
-app.use(logger("dev"));
+const ENV = process.env.NODE_ENV;
+if (ENV != "production") {
+  // 开发环境 / 测试环境
+  app.use(
+    logger("dev", {
+      stream: process.stdout,
+    })
+  );
+} else {
+  // 线上环境
+  const logFileName = path.join(__dirname, "logs", "access.log");
+  const writeStream = fs.createWriteStream(logFileName, {
+    flags: "a",
+  });
+  app.use(
+    logger("combined", {
+      stream: writeStream,
+    })
+  );
+}
 app.use(express.json());
 app.use(
   express.urlencoded({
@@ -29,7 +49,7 @@ app.use(cookieParser());
 
 const redisClient = require("./db/redis");
 const sessionStore = new RedisStore({
-  client: redisClient
+  client: redisClient,
 });
 app.use(
   session({
@@ -39,7 +59,7 @@ app.use(
       httpOnly: true, //默认配置
       maxAge: 24 * 60 * 60 * 1000,
     },
-    store: sessionStore
+    store: sessionStore,
   })
 );
 
