@@ -7,16 +7,10 @@ var logger = require("morgan");
 const session = require("express-session");
 const RedisStore = require("connect-redis")(session);
 
-/* var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users'); */
 const blogRouter = require("./routes/blog");
 const userRouter = require("./routes/user");
 
 var app = express();
-
-// view engine setup
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
 
 const ENV = process.env.NODE_ENV;
 if (ENV != "production") {
