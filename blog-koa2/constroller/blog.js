@@ -25,7 +25,7 @@ const getList = async (author, keyword) => {
 const getDetail = async (id) => {
   id = escape(id);
   const sql = `select * from blogs where id=${id};`;
-  const row = await exec(sql)
+  const rows = await exec(sql)
   return rows[0];
 };
 

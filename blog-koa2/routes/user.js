@@ -1,5 +1,11 @@
 const router = require("koa-router")();
-
+const {
+  login
+} = require("../constroller/user");
+const {
+  SuccessModel,
+  ErrorModel
+} = require("../model/resModel");
 router.prefix("/api/user");
 
 router.post("/login", async (ctx, next) => {
@@ -7,15 +13,23 @@ router.post("/login", async (ctx, next) => {
     username,
     password
   } = ctx.request.body;
-  ctx.body = {
-    errno: 0,
-    username,
-    password
-  };
+  const data = await login(username, password);
+  console.log(data);
+  if (data.username) {
+    // 设置session
+    console.log(data.username,data.realname)
+    ctx.session.username = data.username;
+    ctx.session.realname = data.realname;
+
+    ctx.body = new SuccessModel();
+    return;
+  }
+  ctx.body = new ErrorModel("登陆失败");
+
 });
 
 router.get("/session-test", async (ctx, next) => {
-  
+
   if (ctx.session.viewCount == null) {
     ctx.session.viewCount = 0
   }

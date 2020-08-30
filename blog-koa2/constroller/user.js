@@ -17,7 +17,9 @@ const login = async (username, password) => {
     select username, realname from users where username=${username} and password=${password}
   `;
 
-  const rows = exec(sql);
+  
+
+  const rows = await exec(sql);
   return rows[0] || {};
 };
 module.exports = {
