@@ -9,3 +9,5 @@ cnpm i cross-env --save-dev 安装环境参数
 koa-generic-session koa-redis实现登录
 
 cnpm o mysql -ss --save 安装mysql和xss
+
+cnpm i koa-morgan --save 安装morgan记录日志
