@@ -7,3 +7,5 @@ cnpm install & cnpm run dev 运行项目
 cnpm i cross-env --save-dev 安装环境参数
 
 koa-generic-session koa-redis实现登录
+
+cnpm o mysql -ss --save 安装mysql和xss
